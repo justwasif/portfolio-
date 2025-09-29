@@ -10,13 +10,6 @@ function App() {
 
   return (
     <>
-    <Header/>
-    
-
-      <div className='bg-white flex-wrap ' >
-        <h1>me</h1>
-        
-      </div>
     </>
   )
 }
