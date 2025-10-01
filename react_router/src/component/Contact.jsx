@@ -1,8 +1,10 @@
 import React from "react";
+import emailjs from "emailjs-com";
+import { useRef } from "react";
 
 export default function Contact() {
   return (
-    <section className="py-24">
+    <section className="py-24 bg-black">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 grid-cols-1">
           
@@ -16,7 +18,7 @@ export default function Contact() {
                   className="w-full h-full lg:rounded-l-2xl rounded-2xl bg-blend-multiply bg-indigo-700 object-cover"
                 />
                 <h1 className="font-manrope text-white text-4xl font-bold leading-10 absolute top-11 left-11">
-                  Contact us
+                  Contact Me
                 </h1>
 
                 <div className="absolute bottom-0 w-full lg:p-11 p-5">
@@ -40,7 +42,7 @@ export default function Contact() {
                         />
                       </svg>
                       <h5 className="text-black text-base font-normal leading-6 ml-5">
-                        470-601-1911
+                        +91 8770419277
                       </h5>
                     </a>
 
@@ -61,7 +63,7 @@ export default function Contact() {
                         />
                       </svg>
                       <h5 className="text-black text-base font-normal leading-6 ml-5">
-                        Pagedone1234@gmail.com
+                        wasifpro100@gmail.com
                       </h5>
                     </a>
 
@@ -86,7 +88,7 @@ export default function Contact() {
                         />
                       </svg>
                       <h5 className="text-black text-base font-normal leading-6 ml-5">
-                        654 Sycamore Avenue, Meadowville, WA 76543
+                        IIT-Roorkee,uttrakhand
                       </h5>
                     </a>
                   </div>
@@ -98,7 +100,7 @@ export default function Contact() {
           {/* Right Side - Form */}
           <div className="bg-gray-50 p-5 lg:p-11 lg:rounded-r-2xl rounded-2xl">
             <h2 className="text-indigo-600 font-manrope text-4xl font-semibold leading-10 mb-11">
-              Send Us A Message
+              Send Me A Message
             </h2>
             
             <input

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link,NavLink } from "react-router-dom";
+import Github from "./Github";
 
 export default function Footer(){
     return(
