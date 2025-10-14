@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 
+
 const App = () => {
   const [isVisible, setIsVisible] = useState({});
 
@@ -212,17 +213,22 @@ const App = () => {
 
             {/* Portfolio Project */}
             <div className="bg-white p-8 md:p-12 rounded-2xl shadow-lg transition-all hover:-translate-y-2 hover:shadow-2xl border-2 border-transparent hover:border-blue-600">
-              <h3 className="text-3xl font-semibold mb-4 text-gray-900">Portfolio Web Application</h3>
+              <img
+                src="/chain_talk.png"
+                alt="syntax_error"
+                className="w-full h-64 object-cover rounded-xl mb-6"
+              />
+              <h3 className="text-3xl font-semibold mb-4 text-gray-900">syntax error 2025</h3>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                A dynamic and responsive React-based portfolio showcasing my work and skills. This project demonstrates my ability to create modern user interfaces with clean design principles and smooth user experience.
+                A decentralized AI chatbot powered by Groq’s Llama 3.3 and Ethereum smart contracts, ensuring fair on-chain compensation for web data sources like Wikipedia. it automates token payments whenever AI-scraped content is fetched, making knowledge access transparent, auditable, and blockchain-verifiable.
               </p>
               <div className="mb-6">
                 <strong className="text-gray-900 block mb-2">Technologies:</strong>
-                <span className="text-gray-600">React, JavaScript, HTML, CSS</span>
+                <span className="text-gray-600">React, JavaScript, HTML,TAILWIND CSS,SOLIDITY,ETHER JS,,</span>
               </div>
               <div className="flex gap-4 flex-wrap">
                 <a
-                  href="https://github.com/justwasif/portfolio-.git"
+                  href="https://github.com/justwasif/ChainTalk"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold transition-all hover:bg-blue-700 hover:-translate-y-1"
