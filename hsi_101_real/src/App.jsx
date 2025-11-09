@@ -192,12 +192,20 @@ const App = () => {
                 <strong className="text-gray-900 block mb-2">Technologies:</strong>
                 <span className="text-gray-600">Solidity, ether.js, JavaScript</span>
               </div>
+               <a
+                  href="https://github.com/IntelliVault/IntelliVault-frontend"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold transition-all hover:bg-blue-700 hover:-translate-y-1"
+                >
+                  🔗 GitHub
+                </a>
             </div>
 
             {/* School of Solana */}
             <div className="bg-white p-8 md:p-12 rounded-2xl shadow-lg transition-all hover:-translate-y-2 hover:shadow-2xl border-2 border-transparent hover:border-blue-600">
               <img
-                src="https://raw.githubusercontent.com/Ackee-Blockchain/school-of-solana/master/.banner/banner.png"
+                src="/sos.png"
                 alt="School of Solana"
                 className="w-full h-64 object-cover rounded-xl mb-6"
               />
@@ -225,6 +233,31 @@ const App = () => {
               <div className="mb-6">
                 <strong className="text-gray-900 block mb-2">Technologies:</strong>
                 <span className="text-gray-600">React, JavaScript, HTML,TAILWIND CSS,SOLIDITY,ETHER JS,,</span>
+              </div>
+              <div className="flex gap-4 flex-wrap">
+                <a
+                  href="https://github.com/justwasif/ChainTalk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold transition-all hover:bg-blue-700 hover:-translate-y-1"
+                >
+                  🔗 GitHub
+                </a>
+              </div>
+            </div>
+            <div className="bg-white p-8 md:p-12 rounded-2xl shadow-lg transition-all hover:-translate-y-2 hover:shadow-2xl border-2 border-transparent hover:border-blue-600">
+              <img
+                src="/foodgami.png"
+                alt="E-Cell"
+                className="w-full h-64 object-cover rounded-xl mb-6"
+              />
+              <h3 className="text-3xl font-semibold mb-4 text-gray-900">Accelerator junior</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Foodigami is an AI-powered food customization platform designed to revolutionize meal delivery and personalization. Its core value is enabling customers to create highly tailored meals based on individual tastes, nutritional needs, and even regional preferences, with restaurants and chefs using advanced digital tools to manage and execute these custom orders efficiently. Foodigami also focuses on transparency around ingredients and nutrition, helping users make informed choices and generating detailed food habit reports
+              </p>
+              <div className="mb-6">
+                <strong className="text-gray-900 block mb-2">Technologies:</strong>
+                <span className="text-gray-600">Artificial Intelligence (AI),Web Application Platform ,Cloud Kitchen Integration,Data Analytics,Subscription Model</span>
               </div>
               <div className="flex gap-4 flex-wrap">
                 <a
