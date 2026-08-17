@@ -1,332 +1,48 @@
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Float, Environment, MeshTransmissionMaterial, Sparkles } from '@react-three/drei';
+import { useMemo, useRef, useState } from 'react';
 import './App.css';
-import React, { useState, useEffect } from 'react';
 
+const wins = [
+  { award: '1st Place', event: 'Road to Devcon · IIT Roorkee', title: 'DEADLIGHT', copy: 'A censorship-resistant dead man’s switch where ciphertext lives in contract state and silence triggers permissionless release.', tone: 'cyan', repo: 'https://github.com/amsorrytola/deadlight', live: 'https://amsorrytola.github.io/deadlight/' },
+  { award: '1st + 3rd', event: 'Syntax Error 2025', title: 'Onryo', copy: 'An isometric mystery game with procedural terrain, AI-generated NPC dialogue and an impostor hidden in the forest.', tone: 'red', repo: 'https://github.com/ayushi8463-lgtm/Syntax-Error-2025' },
+  { award: '3rd + 3rd', event: 'StackTooDeep v3.0', title: 'Ghee Khatam', copy: 'A multiplayer strategy game using Zero-Knowledge proofs to validate hidden-state moves without revealing the map.', tone: 'violet', repo: 'https://github.com/Ibrahim2750mi/StackTooDeep2025' },
+  { award: '3rd Place', event: 'IBM Qiskit Fall Fest 2025', title: 'Dead & Alive 4.0', copy: 'A quantum-computing hackathon achievement, adding quantum systems to an already Web3-heavy builder journey.', tone: 'pink' },
+];
 
-const App = () => {
-  const [isVisible, setIsVisible] = useState({});
+const projects = [
+  { no: '01', kind: 'WEB3 / ZK', title: 'Ghee Khatam', desc: 'Trustless multiplayer strategy with ZK move validation, real-time game state, token economy and NFT rewards.', tech: 'React · Phaser · Node · Solidity · Circom · SnarkJS', link: 'https://github.com/Ibrahim2750mi/StackTooDeep2025' },
+  { no: '02', kind: 'ON-CHAIN SECURITY', title: 'DEADLIGHT', desc: 'The chain itself enforces the embargo. Guardian shares cannot open the vault before the heartbeat deadline.', tech: 'Solidity · Foundry · React · TypeScript · AES-256-GCM', link: 'https://github.com/amsorrytola/deadlight', live: 'https://amsorrytola.github.io/deadlight/' },
+  { no: '03', kind: 'GAME / AI', title: 'Onryo', desc: 'Procedural forest exploration, interrogation mechanics and Groq-powered NPC dialogue built for a hackathon.', tech: 'Python · Arcade · Groq AI · Procedural Generation', link: 'https://github.com/ayushi8463-lgtm/Syntax-Error-2025' },
+];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible((prev) => ({ ...prev, [entry.target.id]: true }));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+function Orb() {
+  const ref = useRef();
+  useFrame((_, delta) => { if (ref.current) { ref.current.rotation.x += delta * .12; ref.current.rotation.y += delta * .18; } });
+  return <Float speed={1.4} rotationIntensity={.25} floatIntensity={.7}><mesh ref={ref}><icosahedronGeometry args={[1.65, 2]} /><MeshTransmissionMaterial backside thickness={1.4} chromaticAberration={.08} anisotropy={.25} distortion={.12} distortionScale={.4} temporalDistortion={.08} roughness={.12} color="#8eeeff" /></mesh></Float>;
+}
 
-    document.querySelectorAll('section').forEach((section) => {
-      observer.observe(section);
-    });
+function Scene() { return <Canvas camera={{ position: [0, 0, 6], fov: 38 }} dpr={[1, 1.6]}><ambientLight intensity={.7} /><pointLight position={[3, 2, 4]} intensity={8} color="#72e7ff" /><pointLight position={[-3, -1, 2]} intensity={5} color="#9b75ff" /><Sparkles count={90} scale={7} size={1.4} speed={.25} opacity={.5} /><Orb /><Environment preset="city" /></Canvas>; }
 
-    return () => observer.disconnect();
-  }, []);
+function App() {
+  const [menu, setMenu] = useState(false);
+  const [active, setActive] = useState('all');
+  const filtered = active === 'all' ? projects : projects.filter(p => p.kind.includes(active));
+  const scroll = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  return <div className="site">
+    <header className="nav wrap"><a className="logo" href="#top">W<span>.</span></a><button className="menu" onClick={() => setMenu(!menu)} aria-label="Menu">☰</button><nav className={menu ? 'open' : ''}><a href="#work" onClick={() => setMenu(false)}>Work</a><a href="#wins" onClick={() => setMenu(false)}>Wins</a><a href="#about" onClick={() => setMenu(false)}>About</a><a href="#contact" onClick={() => setMenu(false)}>Contact</a><a className="nav-cta" href="https://github.com/justwasif" target="_blank">GitHub ↗</a></nav></header>
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    <main id="top">
+      <section className="hero wrap"><div className="hero-copy reveal"><div className="eyebrow"><i /> AVAILABLE FOR BUILDS · IIT ROORKEE</div><h1>I build things<br /><em>worth showing.</em></h1><p>Mohammad Wasif — developer, hackathon winner and systems enthusiast exploring <b>Rust, blockchain, ZK, AI agents and distributed systems.</b></p><div className="hero-actions"><button className="solid" onClick={() => scroll('work')}>See selected work <span>↓</span></button><a className="ghost" href="https://www.linkedin.com/in/mohammed-wasif-ansari-1b439538b/" target="_blank">LinkedIn ↗</a></div><div className="micro"><span>04</span> hackathons <span>·</span> <span>02</span> outright wins <span>·</span> <span>∞</span> things left to build</div></div><div className="hero-art"><div className="orb-glow" /><Scene /><div className="code-float c1">ZK_PROOF · VALID</div><div className="code-float c2">BUILD → SHIP → REPEAT</div></div></section>
 
-  return (
-    <div className="font-sans bg-white text-gray-900 overflow-x-hidden">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+      <section id="wins" className="section wrap"><div className="section-top"><div><small>01 / RECEIPTS</small><h2>Winning is nice.<br /><span>Building is better.</span></h2></div><p>Four hackathon achievements across blockchain, games and quantum computing. No inflated claims — just the work.</p></div><div className="wins-grid">{wins.map((w,i)=><article className={`win ${w.tone}`} key={w.title}><div className="win-number">0{i+1}</div><div className="award">{w.award}</div><h3>{w.title}</h3><div className="event">{w.event}</div><p>{w.copy}</p>{w.repo && <a className="arrow" href={w.repo} target="_blank">View project <span>↗</span></a>}</article>)}</div></section>
 
-        * {
-          font-family: 'Montserrat', sans-serif;
-        }
+      <section id="work" className="section work wrap"><div className="section-top"><div><small>02 / SELECTED WORK</small><h2>Projects with<br /><span>actual problems.</span></h2></div><div className="filters"><button className={active==='all'?'active':''} onClick={()=>setActive('all')}>All</button><button className={active==='WEB3'?'active':''} onClick={()=>setActive('WEB3')}>Web3</button><button className={active==='ON-CHAIN'?'active':''} onClick={()=>setActive('ON-CHAIN')}>On-chain</button><button className={active==='GAME'?'active':''} onClick={()=>setActive('GAME')}>Game</button></div></div><div className="projects-grid">{filtered.map(p=><article className="project" key={p.no}><div className="project-head"><span>{p.no}</span><small>{p.kind}</small></div><h3>{p.title}</h3><p>{p.desc}</p><div className="tech">{p.tech}</div><div className="project-links"><a href={p.link} target="_blank">GitHub ↗</a>{p.live&&<a href={p.live} target="_blank">Live demo ↗</a>}</div></article>)}</div></section>
 
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
+      <section id="about" className="section wrap"><div className="about-grid"><div><small>03 / ABOUT</small><h2>Curious by default.<br /><span>Competitive by deadline.</span></h2></div><div className="about-copy"><p>I’m a student at <b>IIT Roorkee</b> who enjoys going deeper than the tutorial. I like understanding why systems work — memory, networks, cryptography, blockchains and the trade-offs behind products.</p><p>Right now I’m pushing hard on <b>Rust + DSA, Ethereum, ZK, DeFi, AI agents and systems.</b> Hackathons are where I pressure-test what I learn.</p><div className="skills">{['Rust','Solidity','Foundry','React','Node.js','Python','ZK Proofs','Ethereum','AI Agents','System Design','MongoDB','Linux / NixOS'].map(s=><span key={s}>{s}</span>)}</div></div></div></section>
 
-        .animate-float {
-          animation: float 20s infinite ease-in-out;
-        }
-
-        .animate-float-reverse {
-          animation: float 15s infinite ease-in-out reverse;
-        }
-
-        .fade-in {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
-
-      {/* Hero Section */}
-      <section
-        id="hero"
-        className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-200"
-      >
-        <div className="absolute w-[500px] h-[500px] bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-full -top-64 -right-64 animate-float" />
-        <div className="absolute w-[300px] h-[300px] bg-gradient-to-br from-blue-500/5 to-transparent rounded-full -bottom-32 -left-32 animate-float-reverse" />
-
-        <div className="text-center z-10 px-4">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 text-gray-900 tracking-tight">
-            Mohammed Wasif Ansari
-          </h1>
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-light text-gray-700 mb-6">
-            Designing Structures | Building Code
-          </h2>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed px-4">
-            A B.Arch student at IIT Roorkee exploring the intersection of architectural design and decentralized technology.
-          </p>
-          <div className="flex gap-6 justify-center flex-wrap">
-            <button
-              onClick={() => scrollToSection('projects')}
-              className="px-10 py-4 bg-blue-600 text-white rounded-full font-semibold transition-all hover:bg-blue-700 hover:-translate-y-1 shadow-lg hover:shadow-xl"
-            >
-              View My Work 👇
-            </button>
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="px-10 py-4 bg-transparent text-blue-600 border-2 border-blue-600 rounded-full font-semibold transition-all hover:bg-blue-600 hover:text-white hover:-translate-y-1"
-            >
-              Get in Touch ✉️
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className={`py-24 bg-gray-50 fade-in ${isVisible.about ? 'visible' : ''}`}>
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 relative inline-block left-1/2 -translate-x-1/2">
-            About Me
-            <span className="absolute bottom-[-10px] left-0 w-16 h-1 bg-blue-600" />
-          </h2>
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              I am a Bachelor of Architecture student at the Indian Institute of Technology, Roorkee, with a deep passion for design and technology. My journey is focused on exploring the powerful intersection of architecture, web development, and blockchain.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              I enjoy building innovative projects that combine creativity with practical, code-driven solutions, and I am constantly learning new tools and frameworks. My goal is to contribute to impactful projects while pushing the boundaries of what's possible at the crossroads of design and technology.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Tech Stack Section */}
-      <section id="skills" className={`py-24 bg-white fade-in ${isVisible.skills ? 'visible' : ''}`}>
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 relative inline-block left-1/2 -translate-x-1/2">
-            My Tech Stack & Tools
-            <span className="absolute bottom-[-10px] left-0 w-16 h-1 bg-blue-600" />
-          </h2>
-          <div className="grid md:grid-cols-3 gap-12 mt-12">
-            <div>
-              <h3 className="text-2xl font-semibold mb-6 text-gray-900">Web & Blockchain</h3>
-              <div className="flex flex-wrap gap-3">
-                {['React', 'JavaScript', 'Solidity', 'ether.js', 'HTML', 'Tailwind CSS', 'Rust'].map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-6 py-3 bg-gray-50 rounded-full text-gray-700 transition-all hover:bg-blue-600 hover:text-white hover:-translate-y-1 cursor-default"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="text-2xl font-semibold mb-6 text-gray-900">Programming Languages</h3>
-              <div className="flex flex-wrap gap-3">
-                {['Python', 'C++ (Basic)'].map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-6 py-3 bg-gray-50 rounded-full text-gray-700 transition-all hover:bg-blue-600 hover:text-white hover:-translate-y-1 cursor-default"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="text-2xl font-semibold mb-6 text-gray-900">Design & Architecture</h3>
-              <div className="flex flex-wrap gap-3">
-                {['AutoCAD', 'Android Studio', 'Figma'].map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-6 py-3 bg-gray-50 rounded-full text-gray-700 transition-all hover:bg-blue-600 hover:text-white hover:-translate-y-1 cursor-default"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className={`py-24 bg-gray-50 fade-in ${isVisible.projects ? 'visible' : ''}`}>
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 relative inline-block left-1/2 -translate-x-1/2">
-            Projects & Achievements
-            <span className="absolute bottom-[-10px] left-0 w-16 h-1 bg-blue-600" />
-          </h2>
-          <div className="grid gap-8 mt-12">
-            {/* EthOnline */}
-            <div className="bg-white p-8 md:p-12 rounded-2xl shadow-lg transition-all hover:-translate-y-2 hover:shadow-2xl border-2 border-transparent hover:border-blue-600">
-              <img
-                src="https://miro.medium.com/v2/1*fHerDrCZy-D9W787CboY8Q.png"
-                alt="EthOnline"
-                className="w-full h-64 object-cover rounded-xl mb-6"
-              />
-              <h3 className="text-3xl font-semibold mb-4 text-gray-900">EthOnline Qualifier</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                Selected to participate in a competitive global hackathon focused on the Ethereum ecosystem. This experience involved rapid prototyping and collaboration, sharpening my skills in smart contract development and decentralized application architecture.
-              </p>
-              <div className="mb-6">
-                <strong className="text-gray-900 block mb-2">Technologies:</strong>
-                <span className="text-gray-600">Solidity, ether.js, JavaScript</span>
-              </div>
-               <a
-                  href="https://github.com/IntelliVault/IntelliVault-frontend"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold transition-all hover:bg-blue-700 hover:-translate-y-1"
-                >
-                  🔗 GitHub
-                </a>
-            </div>
-
-            {/* School of Solana */}
-            <div className="bg-white p-8 md:p-12 rounded-2xl shadow-lg transition-all hover:-translate-y-2 hover:shadow-2xl border-2 border-transparent hover:border-blue-600">
-              <img
-                src="/sos.png"
-                alt="School of Solana"
-                className="w-full h-64 object-cover rounded-xl mb-6"
-              />
-              <h3 className="text-3xl font-semibold mb-4 text-gray-900">School of Solana Graduate</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                Completed an intensive program covering the fundamentals of the Solana blockchain. Developed a foundational understanding of building high-performance, scalable dApps using Rust and the Solana framework.
-              </p>
-              <div className="mb-6">
-                <strong className="text-gray-900 block mb-2">Technologies:</strong>
-                <span className="text-gray-600">Rust, Solana</span>
-              </div>
-            </div>
-
-            {/* Portfolio Project */}
-            <div className="bg-white p-8 md:p-12 rounded-2xl shadow-lg transition-all hover:-translate-y-2 hover:shadow-2xl border-2 border-transparent hover:border-blue-600">
-              <img
-                src="/chain_talk.png"
-                alt="syntax_error"
-                className="w-full h-64 object-cover rounded-xl mb-6"
-              />
-              <h3 className="text-3xl font-semibold mb-4 text-gray-900">syntax error 2025</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                A decentralized AI chatbot powered by Groq’s Llama 3.3 and Ethereum smart contracts, ensuring fair on-chain compensation for web data sources like Wikipedia. it automates token payments whenever AI-scraped content is fetched, making knowledge access transparent, auditable, and blockchain-verifiable.
-              </p>
-              <div className="mb-6">
-                <strong className="text-gray-900 block mb-2">Technologies:</strong>
-                <span className="text-gray-600">React, JavaScript, HTML,TAILWIND CSS,SOLIDITY,ETHER JS,,</span>
-              </div>
-              <div className="flex gap-4 flex-wrap">
-                <a
-                  href="https://github.com/justwasif/ChainTalk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold transition-all hover:bg-blue-700 hover:-translate-y-1"
-                >
-                  🔗 GitHub
-                </a>
-              </div>
-            </div>
-            <div className="bg-white p-8 md:p-12 rounded-2xl shadow-lg transition-all hover:-translate-y-2 hover:shadow-2xl border-2 border-transparent hover:border-blue-600">
-              <img
-                src="/foodgami.png"
-                alt="E-Cell"
-                className="w-full h-64 object-cover rounded-xl mb-6"
-              />
-              <h3 className="text-3xl font-semibold mb-4 text-gray-900">Accelerator junior</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                Foodigami is an AI-powered food customization platform designed to revolutionize meal delivery and personalization. Its core value is enabling customers to create highly tailored meals based on individual tastes, nutritional needs, and even regional preferences, with restaurants and chefs using advanced digital tools to manage and execute these custom orders efficiently. Foodigami also focuses on transparency around ingredients and nutrition, helping users make informed choices and generating detailed food habit reports
-              </p>
-              <div className="mb-6">
-                <strong className="text-gray-900 block mb-2">Technologies:</strong>
-                <span className="text-gray-600">Artificial Intelligence (AI),Web Application Platform ,Cloud Kitchen Integration,Data Analytics,Subscription Model</span>
-              </div>
-              <div className="flex gap-4 flex-wrap">
-                <a
-                  href="https://github.com/justwasif/ChainTalk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold transition-all hover:bg-blue-700 hover:-translate-y-1"
-                >
-                  🔗 GitHub
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className={`py-24 bg-white text-center fade-in ${isVisible.contact ? 'visible' : ''}`}>
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-4">Let's Create Something Together.</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed">
-            I'm always open to discussing new projects, creative ideas, or opportunities to be part of an ambitious team.
-          </p>
-          <div className="flex justify-center gap-6 flex-wrap">
-            <a
-              href="mailto:wasifpro100@gmail.com"
-              className="flex items-center gap-3 px-6 py-4 bg-gray-50 rounded-full text-gray-700 transition-all hover:text-blue-600 hover:-translate-y-1 hover:bg-gray-100"
-            >
-              <span>✉️</span> wasifpro100@gmail.com
-            </a>
-
-            <a
-              href="https://github.com/justwasif"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-6 py-4 bg-gray-50 rounded-full text-gray-700 transition-all hover:text-blue-600 hover:-translate-y-1 hover:bg-gray-100"
-            >
-              <span>💻</span> GitHub
-            </a>
-
-            <a
-              href="https://x.com/wasif_genz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-6 py-4 bg-gray-50 rounded-full text-gray-700 transition-all hover:text-blue-600 hover:-translate-y-1 hover:bg-gray-100"
-            >
-              <span>🐦</span> X (Twitter)
-            </a>
-
-            <a
-              href="https://www.instagram.com/slaysid6/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-6 py-4 bg-gray-50 rounded-full text-gray-700 transition-all hover:text-blue-600 hover:-translate-y-1 hover:bg-gray-100"
-            >
-              <span>📸</span> Instagram
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-gray-400">&copy; 2025 Mohammed Wasif Ansari. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
-  );
-};
-
+      <section id="contact" className="contact wrap"><div className="contact-inner"><small>04 / CONTACT</small><h2>Have a weird idea?</h2><p>Good. Those are usually the interesting ones.</p><div className="contact-actions"><a className="solid" href="mailto:wasif.iitr.ansari@gmail.com">wasif.iitr.ansari@gmail.com ↗</a><a className="ghost" href="https://github.com/justwasif" target="_blank">GitHub ↗</a><a className="ghost" href="https://x.com/wasif_genz" target="_blank">X ↗</a></div></div></section>
+    </main><footer className="wrap"><span>© 2026 Mohammad Wasif</span><span>Designed to feel like a portfolio, not a résumé.</span></footer>
+  </div>;
+}
 export default App;
